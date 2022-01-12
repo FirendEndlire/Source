@@ -9,43 +9,7 @@ print(f.closed)
 with open(F'data/map2.txt', 'rt') as f:
     matrix_map2 = f.readlines()
 print(f.closed)
-TABEl = {
-    "_____": 1,
-    "____W": 1,
-    "___W_": 1,
-    "___WW": -1,
-    "__W__": 0,
-    "__W_W": 0,
-    "__WW_": -1,
-    "__WWW": -1,
 
-    "_W___": 1,
-    "_W__W": 1,
-    "_W_W_": 1,
-    "_W_WW": -1,
-    "_WW__": -1,
-    "_WW_W": 0,
-    "_WWW_": 0,
-    "_WWWW": 0,
-
-    "W____": -1,
-    "W___W": -1,
-    "W__W_": -1,
-    "W__WW": -1,
-    "W_W__": 0,
-    "W_W_W": 0,
-    "W_WW_": 0,
-    "W_WWW": 0,
-
-    "WW___": 0,
-    "WW__W": 0,
-    "WW_W_": 0,
-    "WW_WW": 0,
-    "WWW__": 0,
-    "WWW_W": 0,
-    "WWWW_": 0,
-    "WWWWW": 0
-}
 
 def generation_map(x, y):
     matrix = []

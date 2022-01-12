@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from collections import deque
-from ray_casting import mapping
+from ray_casting import mapping, Button
 from map import map_now
 
 
@@ -9,125 +9,6 @@ from map import map_now
 class Sprites:
     def __init__(self):
         self.sprite_parameters = { # это все характеристи спрайтов, тоже сделаю поддержку своих, если смогу
-            'sprite_barrel': {
-                'sprite': pygame.image.load(F'data/sprites/barrel/base/0.png').convert_alpha(),
-                'viewing_angles': None,
-                'shift': 1.8,
-                'scale': (0.4, 0.4),
-                'side': 30,
-                'animation': deque(
-                    [pygame.image.load(F'data/sprites/barrel/anim/{i}.png').convert_alpha() for i in range(12)]),
-                'death_animation': deque([pygame.image.load(F'data/sprites/barrel/death/{i}.png')
-                                          .convert_alpha() for i in range(4)]),
-                'is_dead': None,
-                'dead_shift': 2.6,
-                'animation_dist': 800,
-                'animation_speed': 10,
-                'blocked': True,
-                'flag': 'decor',
-                'obj_action': []
-            },
-            'sprite_pin': {
-                'sprite': pygame.image.load(F'data/sprites/pin/base/0.png').convert_alpha(),
-                'viewing_angles': None,
-                'shift': 0.6,
-                'scale': (0.6, 0.6),
-                'side': 30,
-                'animation': deque([pygame.image.load(F'data/sprites/pin/anim/{i}.png').convert_alpha() for i in range(8)]),
-                'death_animation': [],
-                'is_dead': 'immortal',
-                'dead_shift': None,
-                'animation_dist': 800,
-                'animation_speed': 10,
-                'blocked': True,
-                'flag': 'decor',
-                'obj_action': []
-            },
-            'sprite_flame': {
-                'sprite': pygame.image.load(F'data/sprites/flame/base/0.png').convert_alpha(),
-                'viewing_angles': None,
-                'shift': 0.7,
-                'scale': (0.6, 0.6),
-                'side': 30,
-                'animation': deque(
-                    [pygame.image.load(F'data/sprites/flame/anim/{i}.png').convert_alpha() for i in range(16)]),
-                'death_animation': [],
-                'is_dead': 'immortal',
-                'dead_shift': 1.8,
-                'animation_dist': 1800,
-                'animation_speed': 5,
-                'blocked': None,
-                'flag': 'decor',
-                'obj_action': []
-            },
-            'npc_devil': {
-                'sprite': [pygame.image.load(F'data/sprites/devil/base/{i}.png').convert_alpha() for i in range(8)],
-                'viewing_angles': True,
-                'shift': 0.0,
-                'scale': (1.1, 1.1),
-                'side': 50,
-                'animation': [],
-                'death_animation': deque([pygame.image.load(F'data/sprites/devil/death/{i}.png')
-                                           .convert_alpha() for i in range(6)]),
-                'is_dead': None,
-                'dead_shift': 0.6,
-                'animation_dist': None,
-                'animation_speed': 10,
-                'blocked': True,
-                'flag': 'npc',
-                'obj_action': deque(
-                    [pygame.image.load(F'data/sprites/devil/anim/{i}.png').convert_alpha() for i in range(9)]),
-            },
-            'sprite_door_v': {
-                'sprite': [pygame.image.load(F'data/sprites/doors/door_v/{i}.png').convert_alpha() for i in range(16)],
-                'viewing_angles': True,
-                'shift': 0.1,
-                'scale': (2.6, 1.2),
-                'side': 100,
-                'animation': [],
-                'death_animation': [],
-                'is_dead': 'immortal',
-                'dead_shift': 0,
-                'animation_dist': 0,
-                'animation_speed': 0,
-                'blocked': True,
-                'flag': 'door_h',
-                'obj_action': []
-            },
-            'sprite_door_h': {
-                'sprite': [pygame.image.load(F'data/sprites/doors/door_h/{i}.png').convert_alpha() for i in range(16)],
-                'viewing_angles': True,
-                'shift': 0.1,
-                'scale': (2.6, 1.2),
-                'side': 100,
-                'animation': [],
-                'death_animation': [],
-                'is_dead': 'immortal',
-                'dead_shift': 0,
-                'animation_dist': 0,
-                'animation_speed': 0,
-                'blocked': True,
-                'flag': 'door_v',
-                'obj_action': []
-            },
-            'npc_soldier0': {
-                'sprite': [pygame.image.load(F'data/sprites/npc/soldier0/base/{i}.png').convert_alpha() for i in range(8)],
-                'viewing_angles': True,
-                'shift': 0.8,
-                'scale': (0.4, 0.6),
-                'side': 30,
-                'animation': [],
-                'death_animation': deque([pygame.image.load(F'data/sprites/npc/soldier0/death/{i}.png')
-                                         .convert_alpha() for i in range(10)]),
-                'is_dead': None,
-                'dead_shift': 1.7,
-                'animation_dist': None,
-                'animation_speed': 6,
-                'blocked': True,
-                'flag': 'npc',
-                'obj_action': deque([pygame.image.load(F'data/sprites/npc/soldier0/action/{i}.png')
-                                    .convert_alpha() for i in range(4)])
-            },
             'monster': {
                 'sprite': pygame.image.load(F'data/sprites/monster/base/0.png').convert_alpha(), 
                 'viewing_angles': None,
@@ -160,11 +41,29 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []},
+                'obj_action': []
+            },
+            'dialog_nps': {
+                'sprite': pygame.image.load('data/sprites/pin/base/0.png').convert_alpha(),
+                'viewing_angles': None,
+                'shift': 0.6,
+                'scale': (0.6, 0.6),
+                'side': 30,
+                'animation': deque([pygame.image.load(f'data/sprites/pin/anim/{i}.png').convert_alpha() for i in range(8)]),
+                'death_animation': [],
+                'is_dead': 'immortal',
+                'dead_shift': None,
+                'animation_dist': 800,
+                'animation_speed': 10,
+                'blocked': True,
+                'flag': 'dialog_npc',
+                'obj_action': []
+            },
         }
 
         self.list_of_objects = [ #список ВСЕХ обьектов на карте #TODO сделай чтобы по-нормальному хранить это все в папке с картой
             SpriteObject(self.sprite_parameters['monster'], (7, 4)),
+            SpriteObject(self.sprite_parameters['dialog_nps'], (7, 5)),
             SpriteObject(self.sprite_parameters['sprite_level_changer'], (9, 7)),
             SpriteObject(self.sprite_parameters['sprite_level_changer'], (13.5, 7.5)),
             SpriteObject(self.sprite_parameters['sprite_level_changer'], (27, 3)),
@@ -175,18 +74,14 @@ class Sprites:
     def sprite_shot(self): # выпор того в кого попали оружием
         return min([obj.is_on_fire for obj in self.list_of_objects], default=(float('inf'), 0))
 
-    @property
-    def blocked_doors(self):# заблоченные двери
-        blocked_doors = {}
-        for obj in self.list_of_objects:
-            if obj.flag in {'door_h', 'door_v'} and obj.blocked:
-                i, j = mapping(obj.x, obj.y)
-                blocked_doors[(i, j)] = 0
-        return blocked_doors
-
 
 class SpriteObject:
     def __init__(self, parameters, pos):
+        self.count = 1
+        self.ray_casting_walls = None
+        self.sprites = None
+        self.drawing = None
+        self.pause = True
         self.object = parameters['sprite'].copy()
         self.viewing_angles = parameters['viewing_angles']
         self.shift = parameters['shift']
@@ -229,7 +124,8 @@ class SpriteObject:
     def pos(self): # позиция нпс
         return self.x - self.side // 2, self.y - self.side // 2
 
-    def object_locate(self, player):# отрисовка обьекта, как я понял
+    def object_locate(self, player, sc, drawing=None, sprites=None,
+                      ray_casting_walls=None, recurs=True):# отрисовка обьекта, как я понял
 
         dx, dy = self.x - player.x, self.y - player.y
         self.distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
@@ -242,7 +138,7 @@ class SpriteObject:
 
         delta_rays = int(gamma / DELTA_ANGLE)
         self.current_ray = CENTER_RAY + delta_rays
-        if self.flag not in {'door_h', 'door_v'}:
+        if self.flag != 'dialog_npc':
             self.distance_to_sprite *= math.cos(HALF_FOV - self.current_ray * DELTA_ANGLE)
 
         fake_ray = self.current_ray + FAKE_RAYS
@@ -256,10 +152,11 @@ class SpriteObject:
             shift = half_sprite_height * self.shift
 
             # logic for doors, npc, decor
-            if self.flag in {'door_h', 'door_v'}:
-                if self.door_open_trigger:
-                    self.open_door()
-                self.object = self.visible_sprite()
+            if self.flag == 'dialog_npc':
+                if recurs:
+                    if self.door_open_trigger:
+                        self.dialog_teleport(sc, player, drawing, sprites, ray_casting_walls)
+                    self.object = self.visible_sprite()
                 sprite_object = self.sprite_animation()
             else:
                 if self.is_dead and self.is_dead != 'immortal':
@@ -324,12 +221,37 @@ class SpriteObject:
             self.animation_count = 0
         return sprite_object
 
-    def open_door(self):
-        if self.flag == 'door_h':
-            self.y -= 3
-            if abs(self.y - self.door_prev_pos) > TILE:
-                self.delete = True
-        elif self.flag == 'door_v':
-            self.x -= 3
-            if abs(self.x - self.door_prev_pos) > TILE:
-                self.delete = True
+    def dialog_teleport(self, sc, player, drawing=None, sprites=None, ray_casting_walls=None):
+        if not drawing is None:
+            self.drawing = drawing
+            self.sprites = sprites
+            self.ray_casting_walls = ray_casting_walls
+        if self.flag == 'dialog_npc':
+            if self.count % 2 == 0:
+                self.say(testDialog, sc, player, self.drawing, self.sprites, self.ray_casting_walls)
+            self.count += 1
+
+    def say(self, dialog, sc, player, drawing, sprites, ray_casting_walls):
+        pygame.mouse.set_visible(True)
+        i = 1
+        self.pause = False
+        button = Button(sc, f"{dialog[0]}", (0, int(HEIGHT * 0.65)), (WIDTH, int(HEIGHT * 0.35)), RED, WHITE)
+        button.draw_button()
+        pygame.display.flip()
+        run = True
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:  # При надатии кнопки...
+                    if button.get_button().collidepoint(event.pos):  # Если мышь на кнопке, кнопка нажатаy
+                        try:
+                            button.set_text(dialog[i])
+                            i += 1
+                        except:
+                            run = False
+            walls, wall_shot = ray_casting_walls(player, drawing.textures)
+            drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casting_walls, False) for obj in sprites.list_of_objects])
+            button.draw_button()
+            pygame.display.flip()
+        self.door_open_trigger = False
+        pygame.mouse.set_visible(False)
+        self.pause = True

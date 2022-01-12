@@ -1,7 +1,7 @@
 #Здесь запрогана отрисовка всего окружения
 import pygame
 from settings import *
-from ray_casting import ray_casting
+from ray_casting import ray_casting, Button
 from map import mini_map
 from collections import deque
 from random import  randrange
@@ -132,16 +132,19 @@ class Drawing: # класс отрисовки всего
         pygame.display.flip()
         self.clock.tick(15)"""
 
-    def menu(self): # начальное меню
+    def menu(self):  # начальное меню
+        label_font = pygame.font.Font('data/font/font1.otf', 250)
+        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)
         x = 0
-        button_font = pygame.font.Font(F'data/font/font.ttf', 72)
-        label_font = pygame.font.Font(F'data/font/font1.otf', 150)
-        start = button_font.render('START', 1, pygame.Color('lightgray'))
-        button_start = pygame.Rect(0, 0, 400, 150)
-        button_start.center = HALF_WIDTH, HALF_HEIGHT
-        exit = button_font.render('EXIT', 1, pygame.Color('lightgray'))
-        button_exit = pygame.Rect(0, 0, 400, 150)
-        button_exit.center = HALF_WIDTH, HALF_HEIGHT + 200
+
+        startButton = Button(self.sc, "СТАРТ", (350, 325), (500, 100), BLACK, SKYBLUE, 0, 128)
+        gratButton = Button(self.sc, "РАЗРАБОТЧИКИ", (350, 450), (500, 100), BLACK, SKYBLUE, 0, 128)
+        outButton = Button(self.sc, "ВЫХОД", (350, 575), (500, 100), BLACK, SKYBLUE, 0, 128)
+
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/music/menuSong.mp3')
+        pygame.mixer.music.play(10)
 
         while self.menu_trigger:
             for event in pygame.event.get():
@@ -152,28 +155,39 @@ class Drawing: # класс отрисовки всего
             self.sc.blit(self.menu_picture, (0, 0), (x % WIDTH, HALF_HEIGHT, WIDTH, HEIGHT))
             x += 1
 
-            pygame.draw.rect(self.sc, BLACK, button_start, border_radius=25, width=10)
-            self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
+            pygame.draw.rect(self.sc, BLACK, (110, 28, 1010, 280), 0, 50)
 
-            pygame.draw.rect(self.sc, BLACK, button_exit, border_radius=25, width=10)
-            self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 70))
-            
-            label = label_font.render('D.E.M.O. Game', 1, GREEN)
-            self.sc.blit(label, (HALF_WIDTH // 4, 60))
+            label = label_font.render('DEMO', 1, SKYBLUE)
+            label_2 = label_font_2.render('GAME', 1, SKYBLUE)
+            self.sc.blit(label, (370, 10))
+            self.sc.blit(label_2, (470, 160))
 
             mouse_pos = pygame.mouse.get_pos()
             mouse_click = pygame.mouse.get_pressed()
-            if button_start.collidepoint(mouse_pos):
-                pygame.draw.rect(self.sc, BLACK, button_start, border_radius=25)
-                self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
+
+            startButton.draw_button()
+            gratButton.draw_button()
+            outButton.draw_button()
+
+            if startButton.get_button().collidepoint(mouse_pos):
+                startButton.resize((340, 315), (520, 120))
                 if mouse_click[0]:
                     self.menu_trigger = False
-            elif button_exit.collidepoint(mouse_pos):
-                pygame.draw.rect(self.sc, BLACK, button_exit, border_radius=25)
-                self.sc.blit(exit, (button_exit.centerx - 85, button_exit.centery - 70))
+            else:
+                startButton.resize((350, 325), (500, 100))
+            if gratButton.get_button().collidepoint(mouse_pos):
+                gratButton.resize((340, 440), (520, 120))
+                if mouse_click[0]:
+                    self.menu_trigger = False
+            else:
+                gratButton.resize((350, 450), (500, 100))
+            if outButton.get_button().collidepoint(mouse_pos):
+                outButton.resize((340, 565), (520, 120))
                 if mouse_click[0]:
                     pygame.quit()
                     sys.exit()
+            else:
+                outButton.resize((350, 575), (500, 100))
 
             pygame.display.flip()
-            self.clock.tick(20)
+            self.clock.tick(30)

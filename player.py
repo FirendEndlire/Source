@@ -84,17 +84,7 @@ class Player:
             dy = player_speed * cos_a
             self.detect_collision(dx, dy)
             
-        """ if keys[pygame.K_SPACE]:
-                dx = player_speed * sin_a * 10
-                dy = -player_speed * cos_a
-                self.detect_collision(dx, dy)"""    
-
-        """if keys[pygame.K_LEFT]:
-            self.angle -= 0.02
-        if keys[pygame.K_RIGHT]:
-            self.angle += 0.02"""
-         #стрельба стрелкой   
-        """if pygame.event== pygame.KEYDOWN and keys[pygame.K_UP]:"""
+        
             
 
         for event in pygame.event.get():
@@ -103,9 +93,7 @@ class Player:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and not self.shot:
                     self.shot = True
-            """if event.type == pygame.KEYDOWN:
-                if not self.shot and keys[pygame.K_UP]:
-                    self.shot = True"""
+            
             
     def change_level(self):
         

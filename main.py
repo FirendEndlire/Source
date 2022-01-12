@@ -40,7 +40,6 @@ while True:
         drawing.fps(clock)
         drawing.player_weapon([wall_shot, sprites.sprite_shot])
 
-    """interaction.check_win(player)"""
 
     pygame.display.flip()
     clock.tick()

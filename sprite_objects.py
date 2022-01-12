@@ -125,7 +125,7 @@ class SpriteObject:
         return self.x - self.side // 2, self.y - self.side // 2
 
     def object_locate(self, player, sc, drawing=None, sprites=None,
-                      ray_casting_walls=None, recurs=True):# отрисовка обьекта, как я понял
+                      ray_casting_walls=None, recurs=True):# отрисовка обьекта
 
         dx, dy = self.x - player.x, self.y - player.y
         self.distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
@@ -163,7 +163,6 @@ class SpriteObject:
                     sprite_object = self.dead_animation()
                     shift = half_sprite_height * self.dead_shift
                     sprite_height = int(sprite_height / 1.3)
-#TODO self.delete = True                          
 
                 elif self.npc_action_trigger:
                     sprite_object = self.npc_in_action()

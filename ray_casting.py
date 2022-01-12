@@ -2,13 +2,53 @@
 import pygame
 from settings import *
 from map import world_map, WORLD_WIDTH, WORLD_HEIGHT
-from numba import njit
+#from numba import njit
 
-@njit(fastmath=True, cache=True)
+class Button:
+    def __init__(self, screen, text, pos, size, color_circuil, color_text, border=0, border_radius=0):  # Все нужное
+        self.screen = screen  # Где рисуем
+        self.pos_x, self.pos_y = pos  # Где именно рисуем
+        self.width, self.height = size  # Размер
+        self.color_circuil = color_circuil  # Цвет кнопки или контура
+        self.color_text = color_text  # Цвет кнопки
+        self.border = border  # Контур или заливка и размер
+        self.font = pygame.font.Font(None, int(self.height * 0.55))  # Нужный размер
+        self.t = text
+        self.text = self.font.render(self.t, False, self.color_text)  # Поверхность
+        self.border_radius = border_radius
+        self.button = pygame.Rect(self.pos_x, self.pos_y, self.width, self.height)  # Сама кнопка
+
+    def set_text(self, text):  # Можно изминить текст на кнопке
+        self.t = text
+
+    def set_border(self, border):  # Можно изминить текст на кнопке
+        self.border = border
+
+    def set_circuil(self, circuil):  # Можно изминить текст на кнопке
+        self.color_circuil = circuil
+
+    def set_color(self, color):  # Можно изминить текст на кнопке
+        self.color_text = color
+
+    def resize(self, pos, size):
+        self.pos_x, self.pos_y = pos
+        self.width, self.height = size
+        self.button = pygame.Rect(self.pos_x, self.pos_y, self.width, self.height)
+
+    def draw_button(self):  # Нарисовать кнопку и текст на ней
+        self.text = self.font.render(self.t, True, self.color_text)
+        pygame.draw.rect(self.screen, self.color_circuil, self.button, self.border, self.border_radius)
+        self.screen.blit(self.text,
+                         (self.pos_x + (self.width // 2 - self.text.get_width() // 2), self.pos_y + self.height // 5))
+
+    def get_button(self):  # Это для проверки совмещения с мышью
+        return self.button
+
+#@njit(fastmath=True, cache=True)
 def mapping(a, b):
     return int(a // TILE) * TILE, int(b // TILE) * TILE
 
-@njit(fastmath=True, cache=True)
+#@njit(fastmath=True, cache=True) не включать
 def ray_casting(player_pos, player_angle, world_map):
     casted_walls = []
     ox, oy = player_pos

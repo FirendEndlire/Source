@@ -1,3 +1,5 @@
+import pygame
+
 from player import Player
 from sprite_objects import *
 from ray_casting import ray_casting_walls
@@ -25,6 +27,7 @@ drawing.background(player.angle)
 walls, wall_shot = ray_casting_walls(player, drawing.textures)
 drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casting_walls) for obj in sprites.list_of_objects])
 drawing.fps(clock)
+flag = True
 drawing.player_weapon([wall_shot, sprites.sprite_shot])
 
 while True:
@@ -39,7 +42,6 @@ while True:
         drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casting_walls) for obj in sprites.list_of_objects])
         drawing.fps(clock)
         drawing.player_weapon([wall_shot, sprites.sprite_shot])
-
 
     pygame.display.flip()
     clock.tick()

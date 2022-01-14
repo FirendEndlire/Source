@@ -83,9 +83,6 @@ class Player:
             dx = -player_speed * sin_a
             dy = player_speed * cos_a
             self.detect_collision(dx, dy)
-            
-        
-            
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,7 +90,9 @@ class Player:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and not self.shot:
                     self.shot = True
-            
+            """if event.type == pygame.KEYDOWN:
+                if not self.shot and keys[pygame.K_UP]:
+                    self.shot = True"""
             
     def change_level(self):
         

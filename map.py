@@ -1,5 +1,6 @@
 from settings import *
 import pygame
+import pprint
 from random import randint
 import pprint
 map_now = ["shop"]
@@ -77,6 +78,8 @@ matrix_map2 = list(map(lambda x: list(x), matrix_map2))
 # карта в таком формате будет
 for i in range(len(matrix_map1)):
     matrix_map1[i] = matrix_map1[i] + labirynth[i] + matrix_map2[i]
+
+pprint.pprint(labirynth)
 
 with open(F'TEST.txt', 'w') as f:
     for i in matrix_map1:

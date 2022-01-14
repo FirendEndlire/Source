@@ -9,9 +9,8 @@ import player
 
 
 #from numba import njit
-muse_now = 'shop'
-#@njit(fastmath=True, cache=True)
 
+#@njit(fastmath=True, cache=True)
 def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):# зрение нпс
     ox, oy = player_pos
     xm, ym = mapping(ox, oy)
@@ -48,9 +47,7 @@ class Interaction: #класс действий
         self.sprites = sprites
         self.drawing = drawing
         self.pain_sound = pygame.mixer.Sound(F'data/sound/pain.wav')
-        
-    
-            
+
     def interaction_objects(self, plyr): #засчет выстрела
         if self.player.shot and self.drawing.shot_animation_trigger:
             for obj in sorted(self.sprites.list_of_objects, key=lambda obj: obj.distance_to_sprite):
@@ -91,29 +88,24 @@ class Interaction: #класс действий
         deleted_objects = self.sprites.list_of_objects[:]
         [self.sprites.list_of_objects.remove(obj) for obj in deleted_objects if obj.delete]
 
-    def change_music(self, map):
-        muse_now = map
     def play_music(self): #играть музычку
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
-        
-        if muse_now == 'shop':
-            pygame.mixer.music.load("data/music/BrokenDream.mp3")
-            pygame.mixer.music.play(10)
-        elif muse_now == "arena":
-            print("change")
-            pygame.mixer.music.stop()
-            pygame.mixer.music.unload()
-            pygame.mixer.music.load("data/music/arena.mp3")
-            pygame.mixer.music.play(10)
-        elif muse_now == "limb":
-            pass
-        elif muse_now == "labyrinth":
-            pass
-        elif muse_now == "cave":
-            pass
-   
-       
-        
+        pygame.mixer.music.load(F'data/music/BrokenDream.mp3')
+        pygame.mixer.music.play(10)
+    def check_win(self, plyr):# проверка победы
+        if not len([obj for obj in self.sprites.list_of_objects if obj.flag == 'npc' and not obj.is_dead]) :
+            """pygame.mixer.music.stop()
+            pygame.mixer.music.load(F'data/sound/win.mp3')
+            pygame.mixer.music.play()
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        exit()
+                self.drawing.win()"""
+                
+            player.Player.change_level(plyr)
+            map_now[0] = "shop"
             
         
+  #TODO  def dell_me self.delete = True  

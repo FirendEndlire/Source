@@ -5,18 +5,21 @@ import pygame
 import math
 from map import map_now
 from map import collision_walls
+import drawing
 class Player:
     def __init__(self, sprites):
         self.x, self.y = player_pos
         self.sprites = sprites
         self.angle = player_angle
         self.sensitivity = 0.004
+        
+
         # коллизия игрока
         self.side = 50
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
         # стреляет щас или нет
         self.shot = False
-
+        drawer = drawing
     @property#позиция 
     def pos(self):
         return (self.x, self.y)
@@ -93,7 +96,7 @@ class Player:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and not self.shot:
                     self.shot = True
-            
+          
             
     def change_level(self):
         
@@ -123,10 +126,8 @@ class Player:
             pygame.mixer.music.play(10)
         elif map_now[0] == "cave":
             map_now[0] = "title"
-            self.x = 1250
-            self.y = 150
-            pygame.mixer.music.load("data/music/arena.mp3")
-            pygame.mixer.music.play(10)
+            
+            
        
         print(map_now[0])
     def mouse_control(self):

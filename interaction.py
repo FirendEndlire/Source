@@ -1,15 +1,13 @@
 # Здесь у нас записаны действия, как игрока, так и обьектов
 from settings import *
-from map import world_map
+from map import world_map, map_now
 from ray_casting import mapping
 import math
 import pygame
-from map import map_now
 import player
 
 
 #from numba import njit
-muse_now = 'shop'
 #@njit(fastmath=True, cache=True)
 
 def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):# зрение нпс
@@ -96,22 +94,10 @@ class Interaction: #класс действий
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
         
-        if map_now[0] == 'shop':
-            print("ddddddddddddd")
-            pygame.mixer.music.load("data/music/abstract.mp3")
-            pygame.mixer.music.play(10)
-        elif muse_now == "arena":
-            print("change")
-            pygame.mixer.music.stop()
-            pygame.mixer.music.unload()
-            pygame.mixer.music.load("data/music/arena.mp3")
-            pygame.mixer.music.play(10)
-        elif muse_now == "limb":
-            pass
-        elif muse_now == "labyrinth":
-            pass
-        elif muse_now == "cave":
-            pass
+        
+        pygame.mixer.music.load("data/music/abstract.mp3")
+        pygame.mixer.music.play(10)
+        
    
        
         

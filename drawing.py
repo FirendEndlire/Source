@@ -1,4 +1,5 @@
 #Здесь запрогана отрисовка всего окружения
+from msilib.schema import Class
 import pygame
 from settings import *
 from ray_casting import ray_casting, Button
@@ -66,6 +67,9 @@ class Drawing: # класс отрисовки всего
         elif map_now[0] == "cave":
             now = "S5"
             now_floor = DARKGRAY
+        else:
+            now = "S5"
+            now_floor = DARKGRAY
         sky_offset = -10 * math.degrees(angle) % WIDTH
         self.sc.blit(self.textures[now], (sky_offset, 0))
         self.sc.blit(self.textures[now], (sky_offset - WIDTH, 0))
@@ -116,10 +120,10 @@ class Drawing: # класс отрисовки всего
     
 
     def menu(self):  # начальное меню
-        label_font = pygame.font.Font('data/font/font1.otf', 250)
-        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)
+        
         x = 0
-
+        label_font = pygame.font.Font('data/font/font1.otf', 250)
+        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)   
         startButton = Button(self.sc, "СТАРТ", (350, 325), (500, 100), BLACK, SKYBLUE, 0, 128)
         gratButton = Button(self.sc, "РАЗРАБОТЧИКИ", (350, 450), (500, 100), BLACK, SKYBLUE, 0, 128)
         outButton = Button(self.sc, "ВЫХОД", (350, 575), (500, 100), BLACK, SKYBLUE, 0, 128)
@@ -174,3 +178,46 @@ class Drawing: # класс отрисовки всего
 
             pygame.display.flip()
             self.clock.tick(30)
+    def credits(self):
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+        
+        x = 0
+        label_font = pygame.font.Font('data/font/font1.otf', 250)
+        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)   
+        
+
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/music/menu.mp3')
+        pygame.mixer.music.play(10)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                exit()
+
+            self.sc.blit(self.menu_picture, (0, 0), (x % WIDTH, HALF_HEIGHT, WIDTH, HEIGHT))
+            x += 1
+
+            pygame.draw.rect(self.sc, BLACK, (110, 50, 1010, 700), 0, 50)
+
+            label = label_font.render('DEMO', 1, SKYBLUE)
+            label_2 = label_font_2.render('GAME', 1, SKYBLUE)
+            self.sc.blit(label, (370, 10))
+            self.sc.blit(label_2, (470, 160))
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_click = pygame.mouse.get_pressed()
+
+            
+            
+            pygame.display.flip()
+            self.clock.tick(30)
+        

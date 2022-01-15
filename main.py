@@ -28,7 +28,7 @@ drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casti
 drawing.fps(clock)
 drawing.player_weapon([wall_shot, sprites.sprite_shot])
 
-while True:
+while map_now[0] != "title":
     interaction.interaction_objects(player)
     interaction.npc_action()
     interaction.clear_world()
@@ -41,6 +41,6 @@ while True:
         drawing.fps(clock)
         drawing.player_weapon([wall_shot, sprites.sprite_shot])
 
-
     pygame.display.flip()
     clock.tick()
+drawing.credits()

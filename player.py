@@ -1,10 +1,10 @@
 # тут все про игрока
+from unittest import main
 from settings import *
 import pygame
 import math
 from map import map_now
 from map import collision_walls
-
 class Player:
     def __init__(self, sprites):
         self.x, self.y = player_pos
@@ -101,22 +101,32 @@ class Player:
             map_now[0] = "arena"
             self.x = 1550
             self.y = 750
+            pygame.mixer.music.load("data/music/arena.mp3")
+            pygame.mixer.music.play(10)
         elif map_now[0] == "arena":
             map_now[0] = "limb"
             self.x = 2750
             self.y = 850
+            pygame.mixer.music.load("data/music/LivesMerchant.mp3")
+            pygame.mixer.music.play(10)
         elif map_now[0] == "limb":
             map_now[0] = "labyrinth"
             self.x = 3350
             self.y = 150
+            pygame.mixer.music.load("data/music/labyrinth.mp3")
+            pygame.mixer.music.play(10)
         elif map_now[0] == "labyrinth":
             map_now[0] = "cave"
             self.x = 4850
             self.y = 750
+            pygame.mixer.music.load("data/music/BrokenDream.mp3")
+            pygame.mixer.music.play(10)
         elif map_now[0] == "cave":
             map_now[0] = "title"
             self.x = 1250
             self.y = 150
+            pygame.mixer.music.load("data/music/arena.mp3")
+            pygame.mixer.music.play(10)
        
         print(map_now[0])
     def mouse_control(self):

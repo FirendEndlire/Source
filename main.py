@@ -20,6 +20,7 @@ interaction.play_music()
 print(map_now)
 print(player_pos)
 
+
 player.movement()
 drawing.background(player.angle)
 walls, wall_shot = ray_casting_walls(player, drawing.textures)

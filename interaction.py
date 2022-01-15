@@ -81,7 +81,7 @@ class Interaction: #класс действий
                     obj.npc_action_trigger = False
 
     def npc_move(self, obj): #движение нпс
-        if abs(obj.distance_to_sprite) > TILE:
+        if abs(obj.distance_to_sprite) > TILE and map_now[0] == "arena":
             dx = obj.x - self.player.pos[0]
             dy = obj.y - self.player.pos[1]
             obj.x = obj.x + 1 if dx < 0 else obj.x - 1
@@ -91,14 +91,14 @@ class Interaction: #класс действий
         deleted_objects = self.sprites.list_of_objects[:]
         [self.sprites.list_of_objects.remove(obj) for obj in deleted_objects if obj.delete]
 
-    def change_music(self, map):
-        muse_now = map
+    
     def play_music(self): #играть музычку
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
         
-        if muse_now == 'shop':
-            pygame.mixer.music.load("data/music/BrokenDream.mp3")
+        if map_now[0] == 'shop':
+            print("ddddddddddddd")
+            pygame.mixer.music.load("data/music/abstract.mp3")
             pygame.mixer.music.play(10)
         elif muse_now == "arena":
             print("change")

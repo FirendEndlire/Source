@@ -1,2 +1,2 @@
-pygame
-numba
+pygame==2.1.0
+

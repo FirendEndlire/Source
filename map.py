@@ -1,7 +1,6 @@
 from settings import *
 import pygame
 from random import randint
-import pprint
 map_now = ["shop"]
 with open(F'data/map1.txt', 'rt') as f:
     matrix_map1 = f.readlines()

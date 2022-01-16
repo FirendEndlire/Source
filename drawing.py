@@ -54,16 +54,16 @@ class Drawing: # класс отрисовки всего
     def background(self, angle): # тут рисуется небо и пол
         if map_now[0] == "shop":
             now = "S1"
-            now_floor = DARKGRAY
+            now_floor = DARKBLUE
         elif map_now[0] == "arena":
             now = "S2"
-            now_floor = RED
+            now_floor = SKYBLUE
         elif map_now[0] == "limb":
             now = "S3"
-            now_floor = WHITE
+            now_floor = VIOLET
         elif map_now[0] == "labyrinth":
             now = "S4"
-            now_floor = DARKORANGE
+            now_floor = PINK
         elif map_now[0] == "cave":
             now = "S5"
             now_floor = DARKGRAY
@@ -120,62 +120,72 @@ class Drawing: # класс отрисовки всего
     
 
     def menu(self):  # начальное меню
-        
-        x = 0
         label_font = pygame.font.Font('data/font/font1.otf', 250)
-        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)   
+        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)
+        x = 0
+        f = False
         startButton = Button(self.sc, "СТАРТ", (350, 325), (500, 100), BLACK, SKYBLUE, 0, 128)
         gratButton = Button(self.sc, "РАЗРАБОТЧИКИ", (350, 450), (500, 100), BLACK, SKYBLUE, 0, 128)
         outButton = Button(self.sc, "ВЫХОД", (350, 575), (500, 100), BLACK, SKYBLUE, 0, 128)
-
+        menuButton = Button(self.sc, "В МЕНЮ", (50, 600), (300, 100), SKYBLUE, BLACK, 0, 128)
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/menu.mp3')
         pygame.mixer.music.play(10)
-
         while self.menu_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
-            self.sc.blit(self.menu_picture, (0, 0), (x % WIDTH, HALF_HEIGHT, WIDTH, HEIGHT))
-            x += 1
-
-            pygame.draw.rect(self.sc, BLACK, (110, 28, 1010, 280), 0, 50)
-
-            label = label_font.render('DEMO', 1, SKYBLUE)
-            label_2 = label_font_2.render('GAME', 1, SKYBLUE)
-            self.sc.blit(label, (370, 10))
-            self.sc.blit(label_2, (470, 160))
-
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_click = pygame.mouse.get_pressed()
-
-            startButton.draw_button()
-            gratButton.draw_button()
-            outButton.draw_button()
-
-            if startButton.get_button().collidepoint(mouse_pos):
-                startButton.resize((340, 315), (520, 120))
-                if mouse_click[0]:
-                    self.menu_trigger = False
+            if f:
+                self.sc.fill((0, 0, 0))
+                font = pygame.font.Font('data/font/font1.otf', 50)
+                font_2 = pygame.font.Font('data/font/font1.otf', 50)
+                label = font.render('Проверка', 1, SKYBLUE)
+                label_2 = font_2.render('Этого', 1, SKYBLUE)
+                self.sc.blit(label, (370, 10))
+                self.sc.blit(label_2, (470, 160))
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
+                menuButton.draw_button()
+                if menuButton.get_button().collidepoint(mouse_pos):
+                    menuButton.resize((40, 590), (320, 120))
+                    if mouse_click[0]:
+                        f = False
+                else:
+                    menuButton.resize((50, 600), (300, 100))
             else:
-                startButton.resize((350, 325), (500, 100))
-            if gratButton.get_button().collidepoint(mouse_pos):
-                gratButton.resize((340, 440), (520, 120))
-                if mouse_click[0]:
-                    self.menu_trigger = False
-            else:
-                gratButton.resize((350, 450), (500, 100))
-            if outButton.get_button().collidepoint(mouse_pos):
-                outButton.resize((340, 565), (520, 120))
-                if mouse_click[0]:
-                    pygame.quit()
-                    sys.exit()
-            else:
-                outButton.resize((350, 575), (500, 100))
-
+                self.sc.blit(self.menu_picture, (0, 0), (x % WIDTH, HALF_HEIGHT, WIDTH, HEIGHT))
+                x += 1
+                pygame.draw.rect(self.sc, BLACK, (110, 28, 1010, 280), 0, 50)
+                label = label_font.render('DEMO', 1, SKYBLUE)
+                label_2 = label_font_2.render('GAME', 1, SKYBLUE)
+                self.sc.blit(label, (370, 10))
+                self.sc.blit(label_2, (470, 160))
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
+                startButton.draw_button()
+                gratButton.draw_button()
+                outButton.draw_button()
+                if startButton.get_button().collidepoint(mouse_pos):
+                    startButton.resize((340, 315), (520, 120))
+                    if mouse_click[0]:
+                        self.menu_trigger = False
+                else:
+                    startButton.resize((350, 325), (500, 100))
+                if gratButton.get_button().collidepoint(mouse_pos):
+                    gratButton.resize((340, 440), (520, 120))
+                    if mouse_click[0]:
+                        f = True
+                else:
+                    gratButton.resize((350, 450), (500, 100))
+                if outButton.get_button().collidepoint(mouse_pos):
+                    outButton.resize((340, 565), (520, 120))
+                    if mouse_click[0]:
+                        pygame.quit()
+                        sys.exit()
+                else:
+                    outButton.resize((350, 575), (500, 100))
             pygame.display.flip()
             self.clock.tick(30)
     def credits(self):

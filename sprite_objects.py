@@ -3,7 +3,7 @@ from settings import *
 from collections import deque
 from ray_casting import mapping, Button
 from map import map_now
-
+from random import randrange
 
 
 class Sprites:
@@ -26,6 +26,7 @@ class Sprites:
                 'flag': 'npc',
                 'obj_action': deque(
                     [pygame.image.load(F'data/sprites/monster/anim/{i}.png').convert_alpha() for i in range(1)]),
+                'Dialog': None
             },
             'sprite_level_changer_1': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/Door.png').convert_alpha(),
@@ -41,7 +42,8 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
             'sprite_level_changer_3': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/cassete.png').convert_alpha(),
@@ -57,7 +59,8 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
             'sprite_level_changer_fake': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/cassete.png').convert_alpha(),
@@ -73,7 +76,8 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': None,
                 'flag': 'decor',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
             'sprite_level_changer_2': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/Danger.png').convert_alpha(),
@@ -89,7 +93,8 @@ class Sprites:
                 'animation_speed': 2,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
             'sprite_level_changer_4': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/Dream.png').convert_alpha(),
@@ -105,7 +110,8 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
             'sprite_level_changer_5': {
                 'sprite': pygame.image.load(F'data/sprites/levelchanger/BrokenDream.png').convert_alpha(),
@@ -121,29 +127,52 @@ class Sprites:
                 'animation_speed': 0,
                 'blocked': True,
                 'flag': 'level_changer',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': None
             },
-            'dialog_nps': {
-                'sprite': pygame.image.load('data/sprites/pin/base/0.png').convert_alpha(),
+            'seller': {
+                'sprite': pygame.image.load('data/sprites/npc/LifeSaver.png').convert_alpha(),
                 'viewing_angles': None,
                 'shift': 0.6,
-                'scale': (0.6, 0.6),
+                'scale': (1, 2),
                 'side': 30,
-                'animation': deque([pygame.image.load(f'data/sprites/pin/anim/{i}.png').convert_alpha() for i in range(8)]),
+                'animation': [],
                 'death_animation': [],
                 'is_dead': 'immortal',
                 'dead_shift': None,
-                'animation_dist': 800,
-                'animation_speed': 10,
+                'animation_dist': 0,
+                'animation_speed': 0,
                 'blocked': True,
                 'flag': 'dialog_npc',
-                'obj_action': []
+                'obj_action': [],
+                'Dialog': seller_dialogue
+            },
+            'machine': {
+                'sprite': pygame.image.load('data/sprites/npc/MachineSeller.png').convert_alpha(),
+                'viewing_angles': None,
+                'shift': 0.6,
+                'scale': (0.25, 0.5),
+                'side': 30,
+                'animation': [],
+                'death_animation': [],
+                'is_dead': 'immortal',
+                'dead_shift': None,
+                'animation_dist': 0,
+                'animation_speed': 0,
+                'blocked': True,
+                'flag': 'dialog_npc',
+                'obj_action': [],
+                'Dialog': machine_dialogue
             },
         }
 
         self.list_of_objects = [ #список ВСЕХ обьектов на карте #TODO сделай чтобы по-нормальному хранить это все в папке с картой
-            SpriteObject(self.sprite_parameters['monster'], (7, 4)),
-            SpriteObject(self.sprite_parameters['dialog_nps'], (7, 5)),
+            SpriteObject(self.sprite_parameters['monster'], (19, 2)),
+            SpriteObject(self.sprite_parameters['monster'], (18, 3)),
+            SpriteObject(self.sprite_parameters['monster'], (17, 4)),
+            SpriteObject(self.sprite_parameters['monster'], (16, 5)),
+            SpriteObject(self.sprite_parameters['seller'], (27, 9)),
+            SpriteObject(self.sprite_parameters['machine'], (5, 2)),
             SpriteObject(self.sprite_parameters['sprite_level_changer_1'], (9, 7)),
             SpriteObject(self.sprite_parameters['sprite_level_changer_2'], (13.5, 7.5)),
             SpriteObject(self.sprite_parameters['sprite_level_changer_3'], (27, 3)),
@@ -167,11 +196,12 @@ class Sprites:
 
 class SpriteObject:
     def __init__(self, parameters, pos):
-        self.count = 1
+        self.count = 0
         self.ray_casting_walls = None
         self.sprites = None
         self.drawing = None
         self.pause = True
+        self.Dialog = parameters['Dialog']
         self.object = parameters['sprite'].copy()
         self.viewing_angles = parameters['viewing_angles']
         self.shift = parameters['shift']
@@ -193,7 +223,7 @@ class SpriteObject:
         self.animation_count = 0
         self.npc_action_trigger = False
         self.door_open_trigger = False
-        self.door_prev_pos = self.y if self.flag == 'door_h' else self.x
+        self.door_prev_pos = self.y if self.flag == 'dialog_npc' else self.x
         self.delete = False
         if self.viewing_angles:
             if len(self.object) == 8:
@@ -215,7 +245,7 @@ class SpriteObject:
         return self.x - self.side // 2, self.y - self.side // 2
 
     def object_locate(self, player, sc, drawing=None, sprites=None,
-                      ray_casting_walls=None, recurs=True):# отрисовка обьекта
+                      ray_casting_walls=None, recurs=True):# отрисовка обьекта, как я понял
 
         dx, dy = self.x - player.x, self.y - player.y
         self.distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
@@ -234,7 +264,7 @@ class SpriteObject:
         fake_ray = self.current_ray + FAKE_RAYS
         if 0 <= fake_ray <= FAKE_RAYS_RANGE and self.distance_to_sprite > 30:
             self.proj_height = min(int(PROJ_COEFF / self.distance_to_sprite),
-                                   DOUBLE_HEIGHT if self.flag not in {'door_h', 'door_v'} else HEIGHT)
+                                   DOUBLE_HEIGHT if self.flag != 'dialog_npc' else HEIGHT)
             sprite_width = int(self.proj_height * self.scale[0])
             sprite_height = int(self.proj_height * self.scale[1])
             half_sprite_width = sprite_width // 2
@@ -316,15 +346,23 @@ class SpriteObject:
             self.sprites = sprites
             self.ray_casting_walls = ray_casting_walls
         if self.flag == 'dialog_npc':
-            if self.count % 2 == 0:
-                self.say(testDialog, sc, player, self.drawing, self.sprites, self.ray_casting_walls)
+            if self.count == 0:
+                self.say(self.Dialog, sc, player, self.drawing, self.sprites, self.ray_casting_walls)
+            elif self.count % 2 == 0:
+                self.say(final_dialogue, sc, player, self.drawing, self.sprites, self.ray_casting_walls, True)
             self.count += 1
 
-    def say(self, dialog, sc, player, drawing, sprites, ray_casting_walls):
+    def say(self, dialog, sc, player, drawing, sprites, ray_casting_walls, rand=False):
         pygame.mouse.set_visible(True)
         i = 1
+        if rand:
+            dialog = dialog[randrange(0, 10)]
+            button = Button(sc, f"{dialog}", (0, int(HEIGHT * 0.65)),
+                            (WIDTH, int(HEIGHT * 0.35)), BLUE, WHITE)
+        else:
+            button = Button(sc, f"{dialog[0]}", (0, int(HEIGHT * 0.65)),
+                            (WIDTH, int(HEIGHT * 0.35)), BLUE, WHITE)
         self.pause = False
-        button = Button(sc, f"{dialog[0]}", (0, int(HEIGHT * 0.65)), (WIDTH, int(HEIGHT * 0.35)), RED, WHITE)
         button.draw_button()
         pygame.display.flip()
         run = True
@@ -332,11 +370,14 @@ class SpriteObject:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:  # При надатии кнопки...
                     if button.get_button().collidepoint(event.pos):  # Если мышь на кнопке, кнопка нажатаy
-                        try:
-                            button.set_text(dialog[i])
-                            i += 1
-                        except:
+                        if rand:
                             run = False
+                        else:
+                            if i < len(dialog):
+                                button.set_text(dialog[i])
+                                i += 1
+                            else:
+                                run = False
             walls, wall_shot = ray_casting_walls(player, drawing.textures)
             drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casting_walls, False) for obj in sprites.list_of_objects])
             button.draw_button()

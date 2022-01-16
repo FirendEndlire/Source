@@ -59,10 +59,15 @@ labirynth[2][1] = "_"
 labirynth[2][2] = "_"
 labirynth[1][1] = "_"
 labirynth[13][13] = "_"
-labirynth[12][12] = "_"
 labirynth[12][13] = "_"
+labirynth[11][13] = "_"
+labirynth[12][12] = "_"
 labirynth[13][12] = "_"
+labirynth[11][12] = "_"
 labirynth[13][11] = "_"
+labirynth[12][11] = "_"
+labirynth[11][11] = "_"
+
 _ = False
 matrix_map1 = list(map(lambda x: x.replace(" ", ""), matrix_map1))
 matrix_map1 = list(map(lambda x: x.replace(",", ""), matrix_map1))

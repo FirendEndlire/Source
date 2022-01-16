@@ -45,7 +45,7 @@ class Interaction: #класс действий
         self.player = player
         self.sprites = sprites
         self.drawing = drawing
-        self.pain_sound = pygame.mixer.Sound(F'data/sound/pain.wav')
+        self.pain_sound = pygame.mixer.Sound(F'data/sound/dead.mp3')
         
     
             

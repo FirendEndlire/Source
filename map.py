@@ -90,13 +90,11 @@ with open(F'TEST.txt', 'w') as f:
 WORLD_WIDTH = len(matrix_map1[0]) * TILE
 WORLD_HEIGHT = len(matrix_map1) * TILE
 world_map = {}# здесь инфа о стенах хранится
-mini_map = set()
 collision_walls = []
 for j, row in enumerate(matrix_map1):# здесь инфа о стенах добавляется
     for i, char in enumerate(row):
         if char != "_":
             char = int(char)
-            mini_map.add((i * MAP_TILE, j * MAP_TILE))
             collision_walls.append(pygame.Rect(i * TILE, j * TILE, TILE, TILE))
             if char:
                 world_map[(i * TILE, j * TILE)] = char

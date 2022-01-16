@@ -1,4 +1,5 @@
 #Здесь запрогана отрисовка всего окружения
+import imp
 from msilib.schema import Class
 import pygame
 from settings import *
@@ -12,6 +13,7 @@ from map import map_now
 class Drawing: # класс отрисовки всего
     def __init__(self, sc, sc_map, player, clock):
         self.sc = sc
+        
         self.sc_map = sc_map
         self.player = player
         self.clock = clock
@@ -139,12 +141,18 @@ class Drawing: # класс отрисовки всего
                     sys.exit()
             if f:
                 self.sc.fill((0, 0, 0))
-                font = pygame.font.Font('data/font/font1.otf', 50)
-                font_2 = pygame.font.Font('data/font/font1.otf', 50)
-                label = font.render('Проверка', 1, SKYBLUE)
-                label_2 = font_2.render('Этого', 1, SKYBLUE)
-                self.sc.blit(label, (370, 10))
-                self.sc.blit(label_2, (470, 160))
+                font = pygame.font.Font('data/font/font2.ttf', 30)
+                font_2 = pygame.font.Font('data/font/font1.otf', 30)
+                label_1 = font.render('Состав команды: 50% Тимошин Вадим, 50% Власюк Демьян', 1, SKYBLUE)
+                label_2 = font.render('Создание смысла происходящему: Тимошин Вадим,  Власюк Демьян', 1, SKYBLUE)
+                label_3 = font.render('Подготовил текстурки:  Власюк Демьян', 1, SKYBLUE)
+                label_4 = font.render('Кодили: Мы', 1, SKYBLUE)
+                label_5 = font.render('Написал музыку: Павел Штеменко', 1, SKYBLUE)
+                self.sc.blit(label_1, (80, 10))
+                self.sc.blit(label_2, (80, 110))
+                self.sc.blit(label_3, (80, 210))
+                self.sc.blit(label_4, (80, 310))
+                self.sc.blit(label_5, (80, 410))
                 mouse_pos = pygame.mouse.get_pos()
                 mouse_click = pygame.mouse.get_pressed()
                 menuButton.draw_button()
@@ -188,15 +196,15 @@ class Drawing: # класс отрисовки всего
                     outButton.resize((350, 575), (500, 100))
             pygame.display.flip()
             self.clock.tick(30)
-    def credits(self):
+    def credits(self, time):
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
         
         x = 0
-        label_font = pygame.font.Font('data/font/font1.otf', 250)
-        label_font_2 = pygame.font.Font('data/font/font1.otf', 150)   
+        font = pygame.font.Font('data/font/font2.ttf', 50)
+        font_2 = pygame.font.Font('data/font/font2.ttf', 12)          
         
 
         pygame.mixer.pre_init(44100, -16, 2, 2048)
@@ -218,10 +226,16 @@ class Drawing: # класс отрисовки всего
 
             pygame.draw.rect(self.sc, BLACK, (110, 50, 1010, 700), 0, 50)
 
-            label = label_font.render('DEMO', 1, SKYBLUE)
-            label_2 = label_font_2.render('GAME', 1, SKYBLUE)
-            self.sc.blit(label, (370, 10))
-            self.sc.blit(label_2, (470, 160))
+            label1 = font.render('Спасибо за прохождение нашей ', 1, SKYBLUE)
+            label2 = font_2.render("суперпупердупермегаультрагиперомегаальфагаммамикробананабстракткрутойкотыклассныеэтовообщектоточитает", 1, SKYBLUE)
+            label3 = font.render('игры!', 1, SKYBLUE)
+            label4 = font.render(f'Ты прошел игру за {time} ', 1, SKYBLUE)
+
+            self.sc.blit(label1, (225, 50))
+            self.sc.blit(label2, (250, 110))
+            self.sc.blit(label3, (550, 125))
+            self.sc.blit(label4, (400, 300))
+            
 
             mouse_pos = pygame.mouse.get_pos()
             mouse_click = pygame.mouse.get_pressed()

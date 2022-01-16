@@ -3,7 +3,8 @@ from sprite_objects import *
 from ray_casting import ray_casting_walls
 from drawing import Drawing
 from interaction import Interaction
-
+import time
+from datetime import datetime
 pygame.init()
 sc = pygame.display.set_mode((WIDTH, HEIGHT))
 sc_map = pygame.Surface(MINIMAP_RES)
@@ -20,6 +21,7 @@ interaction.play_music()
 print(map_now)
 print(player_pos)
 
+start_time = datetime.now()
 
 player.movement()
 drawing.background(player.angle)
@@ -40,7 +42,10 @@ while map_now[0] != "title":
         drawing.world(walls + [obj.object_locate(player, sc, drawing, sprites, ray_casting_walls) for obj in sprites.list_of_objects])
         drawing.fps(clock)
         drawing.player_weapon([wall_shot, sprites.sprite_shot])
+    
 
     pygame.display.flip()
     clock.tick()
-drawing.credits()
+score = str(datetime.now() - start_time).split(".")
+print(score)
+drawing.credits(score[0])

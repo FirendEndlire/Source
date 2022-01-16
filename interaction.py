@@ -1,4 +1,5 @@
 # Здесь у нас записаны действия, как игрока, так и обьектов
+from os import kill
 from settings import *
 from map import world_map, map_now
 from ray_casting import mapping
@@ -41,15 +42,18 @@ def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):# зрение �
 
 
 class Interaction: #класс действий
+            
     def __init__(self, player, sprites, drawing):
         self.player = player
         self.sprites = sprites
         self.drawing = drawing
         self.pain_sound = pygame.mixer.Sound(F'data/sound/dead.mp3')
         
+
     
             
     def interaction_objects(self, plyr): #засчет выстрела
+        
         if self.player.shot and self.drawing.shot_animation_trigger:
             for obj in sorted(self.sprites.list_of_objects, key=lambda obj: obj.distance_to_sprite):
                 if obj.is_on_fire[1]:
@@ -58,7 +62,11 @@ class Interaction: #класс действий
                                                   world_map, self.player.pos):
                             if obj.flag == 'npc':
                                 self.pain_sound.play()
+                                
+                                
+                            
                             obj.is_dead = True
+                            
                             obj.blocked = None
                             self.drawing.shot_animation_trigger = False
                     if obj.flag == 'dialog_npc' and obj.distance_to_sprite < TILE:
@@ -98,7 +106,7 @@ class Interaction: #класс действий
         pygame.mixer.music.load("data/music/abstract.mp3")
         pygame.mixer.music.play(10)
         
-   
+
        
         
             

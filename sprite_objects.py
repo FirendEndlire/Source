@@ -326,6 +326,7 @@ class SpriteObject:
                 self.dead_sprite = self.death_animation[0]
                 self.dead_animation_count += 1
                 
+                
             else:
                 self.dead_sprite = self.death_animation.popleft()
                 self.dead_animation_count = 0
@@ -348,6 +349,7 @@ class SpriteObject:
         if self.flag == 'dialog_npc':
             if self.count == 0:
                 self.say(self.Dialog, sc, player, self.drawing, self.sprites, self.ray_casting_walls)
+                
             elif self.count % 2 == 0:
                 self.say(final_dialogue, sc, player, self.drawing, self.sprites, self.ray_casting_walls, True)
             self.count += 1

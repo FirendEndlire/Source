@@ -134,7 +134,7 @@ class Sprites:
                 'sprite': pygame.image.load('data/sprites/npc/LifeSaver.png').convert_alpha(),
                 'viewing_angles': None,
                 'shift': 0.6,
-                'scale': (1, 2),
+                'scale': (0.5, 1),
                 'side': 30,
                 'animation': [],
                 'death_animation': [],
